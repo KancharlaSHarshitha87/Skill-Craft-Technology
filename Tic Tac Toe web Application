@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tic-Tac-Toe vs Computer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="game-container">
+    <h1>🤖 Tic-Tac-Toe</h1>
+    <div class="board" id="board">
+      <div class="cell" data-index="0"></div>
+      <div class="cell" data-index="1"></div>
+      <div class="cell" data-index="2"></div>
+      <div class="cell" data-index="3"></div>
+      <div class="cell" data-index="4"></div>
+      <div class="cell" data-index="5"></div>
+      <div class="cell" data-index="6"></div>
+      <div class="cell" data-index="7"></div>
+      <div class="cell" data-index="8"></div>
+    </div>
+    <h2 id="status">Your turn (X)</h2>
+    <button id="reset">🔁 Reset Game</button>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.game-container {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px #fff;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  gap: 10px;
+  justify-content: center;
+  margin: 20px auto;
+}
+
+.cell {
+  width: 100px;
+  height: 100px;
+  font-size: 2.5rem;
+  background-color: #222;
+  color: #4fc3f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: background 0.3s;
+}
+
+.cell:hover {
+  background-color: #444;
+}
+
+button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #d32f2f;
+}
+
+
+
+
+
+
+const cells = document.querySelectorAll(".cell");
+const statusText = document.getElementById("status");
+const resetBtn = document.getElementById("reset");
+
+let board = ["", "", "", "", "", "", "", "", ""];
+let currentPlayer = "X";
+let isGameActive = true;
+
+const winCombos = [
+  [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+  [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+  [0, 4, 8], [2, 4, 6]             // diagonals
+];
+
+// Player click
+function handleClick(e) {
+  const index = e.target.dataset.index;
+
+  if (board[index] !== "" || !isGameActive || currentPlayer !== "X") return;
+
+  makeMove(index, "X");
+
+  if (checkWinner("X")) {
+    statusText.textContent = "You win! 🎉";
+    isGameActive = false;
+    return;
+  }
+
+  if (!board.includes("")) {
+    statusText.textContent = "It's a draw!";
+    isGameActive = false;
+    return;
+  }
+
+  currentPlayer = "O";
+  statusText.textContent = "Computer's turn (O)";
+
+  setTimeout(computerTurn, 800); // Delay for realism
+}
+
+// Computer move
+function computerTurn() {
+  if (!isGameActive) return;
+
+  const emptyIndices = board
+    .map((val, idx) => (val === "" ? idx : null))
+    .filter(val => val !== null);
+
+  if (emptyIndices.length === 0) return;
+
+  const randomIndex = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+  makeMove(randomIndex, "O");
+
+  if (checkWinner("O")) {
+    statusText.textContent = "Computer wins! 🤖";
+    isGameActive = false;
+    return;
+  }
+
+  if (!board.includes("")) {
+    statusText.textContent = "It's a draw!";
+    isGameActive = false;
+    return;
+  }
+
+  currentPlayer = "X";
+  statusText.textContent = "Your turn (X)";
+}
+
+// Update the board
+function makeMove(index, player) {
+  board[index] = player;
+  cells[index].textContent = player;
+  cells[index].style.color = player === "X" ? "#4fc3f7" : "#f87171";
+}
+
+// Check for win
+function checkWinner(player) {
+  return winCombos.some(combo => 
+    combo.every(index => board[index] === player)
+  );
+}
+
+// Reset
+function resetGame() {
+  board = ["", "", "", "", "", "", "", "", ""];
+  isGameActive = true;
+  currentPlayer = "X";
+  statusText.textContent = "Your turn (X)";
+  cells.forEach(cell => {
+    cell.textContent = "";
+    cell.style.color = "#4fc3f7";
+  });
+}
+
+cells.forEach(cell => cell.addEventListener("click", handleClick));
+resetBtn.addEventListener("click", resetGame);
