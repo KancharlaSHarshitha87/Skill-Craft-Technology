@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TastyBite | Online Food Delivery</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq4-KvYkdSTzuMzFIXTUElc0husrazrlmQ&s" alt="TastyBite Logo" />
+      <span>TastyBite</span>
+    </div>
+    <button class="nav-toggle">&#9776;</button>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#offers">Offers</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <h1>Delicious Food Delivered Fast</h1>
+    <p>Order your favorite meals anytime, anywhere!</p>
+    <a href="#menu" class="btn">Order Now</a>
+  </section>
+
+  <!-- Menu Section -->
+  <section class="menu" id="menu">
+    <div class="card">
+      <img src="https://source.unsplash.com/300x200/?pizza" alt="Cheesy Pizza" />
+      <h3>Cheesy Pizza</h3>
+      <p>₹249</p>
+      <button>Add to Cart</button>
+    </div>
+    <div class="card">
+      <img src="https://source.unsplash.com/300x200/?burger" alt="Double Burger" />
+      <h3>Double Burger</h3>
+      <p>₹199</p>
+      <button>Add to Cart</button>
+    </div>
+    <div class="card">
+      <img src="https://source.unsplash.com/300x200/?biryani" alt="Chicken Biryani" />
+      <h3>Chicken Biryani</h3>
+      <p>₹299</p>
+      <button>Add to Cart</button>
+    </div>
+    <div class="card">
+      <img src="https://source.unsplash.com/300x200/?pasta" alt="Italian Pasta" />
+      <h3>Italian Pasta</h3>
+      <p>₹189</p>
+      <button>Add to Cart</button>
+    </div>
+  </section>
+
+</body>
+</html>
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar {
+  background-color: #222;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  flex-wrap: wrap;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.nav-toggle {
+  display: none;
+  font-size: 28px;
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.hero {
+  text-align: center;
+  padding: 80px 20px;
+  background: #f4f4f4;
+}
+
+.hero h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+.btn {
+  background-color: black;
+  color: white;
+  padding: 12px 25px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  padding: 40px 20px;
+  background: #fff;
+}
+
+.card {
+  background: #f9f9f9;
+  width: 230px;
+  padding: 15px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.card h3 {
+  margin-top: 10px;
+  font-size: 1.1em;
+}
+
+.card p {
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.card button {
+  padding: 10px 15px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    flex-direction: column;
+    display: none;
+    width: 100%;
+    background-color: #222;
+    margin-top: 10px;
+  }
+
+  .nav-links a {
+    padding: 10px;
+    border-top: 1px solid #444;
+  }
+
+  .nav-toggle {
+    display: block;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+}
+
+
+<script>
+  const toggle = document.querySelector('.nav-toggle');
+  const links = document.querySelector('.nav-links');
+
+  toggle.addEventListener('click', () => {
+    links.classList.toggle('active');
+  });
+</script>
