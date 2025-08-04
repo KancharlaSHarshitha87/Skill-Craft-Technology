@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DAILY PLANNER</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>📝 To-Do List</h1>
+    <div class="input-section">
+      <input type="text" id="taskInput" placeholder="Add your task..." />
+      <input type="datetime-local" id="taskDateTime" />
+      <button onclick="addTask()">Add</button>
+    </div>
+    <ul id="taskList"></ul>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+body {
+  background: #121212;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 40px;
+}
+
+.container {
+  background: #1f1f1f;
+  padding: 20px 30px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 500px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.input-section {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+input[type="text"], input[type="datetime-local"] {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+}
+
+button {
+  padding: 8px 15px;
+  border: none;
+  background-color: #ff5c5c;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: #2c2c2c;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.task-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-actions button {
+  margin-left: 5px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: gray;
+}
+
+
+let tasks = [];
+
+function addTask() {
+  const taskInput = document.getElementById("taskInput");
+  const dateTimeInput = document.getElementById("taskDateTime");
+
+  if (taskInput.value.trim() === "") return;
+
+  const task = {
+    id: Date.now(),
+    text: taskInput.value,
+    dateTime: dateTimeInput.value,
+    completed: false
+  };
+
+  tasks.push(task);
+  taskInput.value = "";
+  dateTimeInput.value = "";
+  renderTasks();
+}
+
+function renderTasks() {
+  const taskList = document.getElementById("taskList");
+  taskList.innerHTML = "";
+
+  tasks.forEach((task) => {
+    const li = document.createElement("li");
+    li.className = task.completed ? "completed" : "";
+
+    const topDiv = document.createElement("div");
+    topDiv.className = "task-top";
+
+    const span = document.createElement("span");
+    span.textContent = `${task.text} (${task.dateTime})`;
+
+    const actions = document.createElement("div");
+    actions.className = "task-actions";
+
+    const completeBtn = document.createElement("button");
+    completeBtn.textContent = task.completed ? "Undo" : "Done";
+    completeBtn.onclick = () => toggleComplete(task.id);
+
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "Edit";
+    editBtn.onclick = () => editTask(task.id);
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.onclick = () => deleteTask(task.id);
+
+    actions.append(completeBtn, editBtn, deleteBtn);
+    topDiv.append(span, actions);
+    li.append(topDiv);
+    taskList.appendChild(li);
+  });
+}
+
+function toggleComplete(id) {
+  tasks = tasks.map((task) =>
+    task.id === id ? { ...task, completed: !task.completed } : task
+  );
+  renderTasks();
+}
+
+function deleteTask(id) {
+  tasks = tasks.filter((task) => task.id !== id);
+  renderTasks();
+}
+
+function editTask(id) {
+  const newText = prompt("Edit task:");
+  const newDateTime = prompt("Edit Date & Time (YYYY-MM-DDTHH:MM):");
+  if (newText && newDateTime) {
+    tasks = tasks.map((task) =>
+      task.id === id ? { ...task, text: newText, dateTime: newDateTime } : task
+    );
+    renderTasks();
+  }
+}
+
+
